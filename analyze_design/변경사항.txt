@@ -37,3 +37,12 @@
                              REFERENCES enroll(enrollno), 
        FOREIGN KEY (uid)
                              REFERENCES user(uid) 로 변경
+
+ 12. user 테이블 --> uemail 컬럼 --> 마지막에 
+	UNIQUE (
+              uemail
+       )
+
+	추가
+
+ 13. 
