@@ -1,3 +1,4 @@
+use dbtest;
 
 CREATE TABLE category (
        cateno               int NOT NULL,
@@ -16,8 +17,8 @@ CREATE TABLE designer (
        address2             varchar(60) NOT NULL,
        dzipcode             varchar(20) NOT NULL,
        validation           boolean DEFAULT false NULL
-                                   CHECK (validation IN ('false', 'true')),
-       like                 int DEFAULT 0 NULL,
+                                   CHECK (validation IN (false, true)),
+       likecnt              int DEFAULT 0 NULL,
        dfilename            varchar(60) NULL,
        dname                varchar(20) NOT NULL,
        PRIMARY KEY (did),
@@ -25,6 +26,8 @@ CREATE TABLE designer (
               demail
        )
 );
+
+drop table designer;
 
 
 CREATE TABLE hairmenu (
@@ -35,9 +38,9 @@ CREATE TABLE hairmenu (
        cateno               int NOT NULL,
        PRIMARY KEY (menuno), 
        FOREIGN KEY (cateno)
-                             REFERENCES category, 
+                             REFERENCES category(cateno), 
        FOREIGN KEY (did)
-                             REFERENCES designer
+                             REFERENCES designer(did)
 );
 
 
@@ -49,9 +52,9 @@ CREATE TABLE enroll (
        did                  varchar(50) NOT NULL,
        PRIMARY KEY (enrollno), 
        FOREIGN KEY (menuno)
-                             REFERENCES hairmenu, 
+                             REFERENCES hairmenu(menuno), 
        FOREIGN KEY (did)
-                             REFERENCES designer
+                             REFERENCES designer(did)
 );
 
 
@@ -61,7 +64,7 @@ CREATE TABLE user (
        uemail               varchar(50) NOT NULL,
        uname                varchar(20) NOT NULL,
        uphone               varchar(20) NOT NULL,
-       grade                varchar(5) DEFAULT C NOT NULL
+       grade                varchar(5) DEFAULT 'C' NOT NULL
                                    CHECK (grade IN ('A', 'C')),
        PRIMARY KEY (uid)
 );
@@ -74,9 +77,9 @@ CREATE TABLE reserve (
        enrollno             int NOT NULL,
        PRIMARY KEY (reserveno), 
        FOREIGN KEY (enrollno)
-                             REFERENCES enroll, 
+                             REFERENCES enroll(enrollno), 
        FOREIGN KEY (uid)
-                             REFERENCES user
+                             REFERENCES user(uid)
 );
 
 
@@ -89,7 +92,7 @@ CREATE TABLE cerification (
        uniquecode2          varchar(50) NULL,
        PRIMARY KEY (did), 
        FOREIGN KEY (did)
-                             REFERENCES designer
+                             REFERENCES designer(did)
 );
 
 
@@ -102,7 +105,7 @@ CREATE TABLE style (
        imgcode              blob NULL,
        PRIMARY KEY (imgno), 
        FOREIGN KEY (did)
-                             REFERENCES designer
+                             REFERENCES designer(did)
 );
 
 
@@ -117,9 +120,9 @@ CREATE TABLE review (
        did                  varchar(50) NOT NULL,
        PRIMARY KEY (rno), 
        FOREIGN KEY (did)
-                             REFERENCES designer, 
+                             REFERENCES designer(did), 
        FOREIGN KEY (uid)
-                             REFERENCES user
+                             REFERENCES user(uid)
 );
 
 
@@ -132,7 +135,7 @@ CREATE TABLE notice (
        ncontent             text NOT NULL,
        PRIMARY KEY (noticeno), 
        FOREIGN KEY (uid)
-                             REFERENCES user
+                             REFERENCES user(uid)
 );
 
 

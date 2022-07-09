@@ -1,0 +1,39 @@
+테이블 변경 사항 :
+
+ 1. designer 테이블 --> like 컬럼 --> 컬럼명을 likecnt로 변경
+
+ 2. user 테이블 --> grade 컬럼 --> varchar(5) DEFAULT 'C' NOT NULL 로 변경
+
+ 3. designer 테이블 --> validation 컬럼 --> boolean DEFAULT false NULL
+                                   CHECK (validation IN (false, true)) 로 변경
+
+ 4. cerification 테이블 --> 테이블명 오타 --> certification으로 변경
+
+ 5. certification 테이블 --> FK 설정 --> FOREIGN KEY (did)
+                             REFERENCES designer(did) 로 변경
+
+ 6. hairmenu 테이블 --> FK 설정 --> FOREIGN KEY (cateno)
+                             REFERENCES category(cateno), 
+       FOREIGN KEY (did)
+                             REFERENCES designer(did) 로 변경
+
+ 7. style 테이블 --> FK 설정 --> FOREIGN KEY (did)
+                             REFERENCES designer(did)
+
+ 8. notice 테이블 --> FK 설정 --> FOREIGN KEY (uid)
+                             REFERENCES user(uid) 로 변경
+
+ 9 review 테이블 --> FK 설정 --> FOREIGN KEY (did)
+                             REFERENCES designer(did), 
+       FOREIGN KEY (uid)
+                             REFERENCES user(uid) 로 변경
+
+ 10. enroll 테이블 --> FK 설정 --> FOREIGN KEY (menuno)
+                             REFERENCES hairmenu(menuno), 
+       FOREIGN KEY (did)
+                             REFERENCES designer(did) 로 변경
+
+ 11. reserve 테이블 --> FK 설정 --> FOREIGN KEY (enrollno)
+                             REFERENCES enroll(enrollno), 
+       FOREIGN KEY (uid)
+                             REFERENCES user(uid) 로 변경
