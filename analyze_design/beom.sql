@@ -199,4 +199,16 @@ CREATE TABLE notice (
 insert into notice(uid,ntitle,ndate,ncontent) values('admin','공지사항입니다',sysdate(),'공지사항 내용입니다.');
 
 
+use dbtest;
+
+select * from designer;
+
+select distinct d.dname, e.enrolldate, e.enrolltime, h.menu, h.price, h.cateno
+	from designer d 
+    left outer join enroll e
+	on d.did = e.did
+    left outer join hairmenu h
+    on d.did = h.did
+    where d.dname = '홍길동';
+    
 
