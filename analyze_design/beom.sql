@@ -103,6 +103,10 @@ insert into user(uid,upw,uemail,uname,uphone) values('user1','1234','test@mail.c
 insert into user(uid,upw,uemail,uname,uphone) values('user2','1234','test2@mail.com','고길동','010-5141-2312');
 insert into user(uid,upw,uemail,uname,uphone) values('admin','1234','admin@mail.com','관리자','010-6134-9361');
 
+use dbtest;
+delete from user
+	where uid = 'user1';
+
 select * from user;
 
 
@@ -121,6 +125,8 @@ CREATE TABLE reserve (
 insert into reserve(enrollno, uid, message) values(2,'user1','안녕하세요');
 insert into reserve(enrollno, uid, message) values(1,'user2','안녕하세요 반갑습니다');
 insert into reserve(enrollno, uid, message) values(3,'user1','안녕하세요 ㅎㅇㅎㅇ');
+
+delete from reserve where uid = 'user1';
 select * from reserve;
 
 
@@ -181,6 +187,7 @@ insert into review(rtitle,rcontent,rdate,rfilename,uid,did) values('최고에요
 insert into review(rtitle,rcontent,rdate,rfilename,uid,did) values('최고에요!','맘에 들어요~',sysdate(),'photo5.jpg','user1','designer1');
 insert into review(rtitle,rcontent,rdate,rfilename,uid,did) values('최고에요!','맘에 들어요~',sysdate(),'photo3.jpg','user2','designer1');
 
+delete from review where uid = 'user1';
 select * from review;
 
 
@@ -204,7 +211,7 @@ use dbtest;
 select * from designer;
 
 select distinct d.dname, e.enrolldate, e.enrolltime, h.menu, h.price, h.cateno
-	from designer d 
+	from designer d
     left outer join enroll e
 	on d.did = e.did
     left outer join hairmenu h
