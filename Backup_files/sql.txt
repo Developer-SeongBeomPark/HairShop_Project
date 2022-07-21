@@ -1,0 +1,21 @@
+<resultMap type="com.study.menu.MenuDTO" id="enrolllist">
+		<result property="menu" column="menu" />
+		<result property="hgender" column="hgender" />
+		<result property="price" column="price" />
+
+		<association property="edto"
+			javaType="com.study.enroll.EnrollDTO">
+			<result property="enrolldate" column="enrolldate" />
+			<result property="enrolltime" column="enrolltime" />
+		</association>
+	</resultMap>
+
+	<select id="list" parameterType="String" resultMap="enrolllist">
+		select
+		e.enrolldate, e.enrolltime, h.menu, h.hgender ,h.price
+		from hairmenu h
+		left join enroll e
+		on e.menuno = h.menuno
+		where e.did = #{did}
+
+	</select>

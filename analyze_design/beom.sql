@@ -1,4 +1,7 @@
-use dbtest;
+use beom;
+
+select * from user;
+delete from certification;
 
 CREATE TABLE category (
        cateno               int NOT NULL		auto_increment,
@@ -14,58 +17,79 @@ select * from category;
 CREATE TABLE designer (
        did                  varchar(50) NOT NULL,
        dpw                  varchar(10) NOT NULL,
+       dname                varchar(20) NOT NULL,
        birth                varchar(6) NOT NULL,
        demail               varchar(50) NOT NULL,
        dphone               varchar(20) NOT NULL,
+       hairshop				varchar(20) not null,
        address1             varchar(60) NOT NULL,
        address2             varchar(60) NOT NULL,
        dzipcode             varchar(20) NOT NULL,
        validation           boolean DEFAULT false NULL
                                    CHECK (validation IN (false, true)),
        likecnt              int DEFAULT 0 NULL,
-       dfilename            varchar(60) NULL,
-       dname                varchar(20) NOT NULL,
+       dfilename            varchar(60) default 'default.jpg',
+	   introduction			varchar(200) null,
        PRIMARY KEY (did),
        UNIQUE (
               demail
        )
 );
-insert into designer values('designer1', '1234', '910709', 'user1@gmail.com', '010-1234-5678', '서울시 종로구', '대왕빌딩 602호', '152342', true, 0 , 'default.jpg', '홍길동');
-insert into designer(did,dpw,dname,birth,demail,dphone,address1,address2,dzipcode,dfilename) values('designer2','1234','김길동','930709','user2@gmail.com','010-1414-1414','서울시 종로구','대왕빌딩 601호','123412','default.jpg');
+alter table designer add hairshop varchar(20) not null;
+alter table designer modify column dfilename varchar(60) default 'default.jpg';
+
+
+select did, dname, validation
+		from designer
+		where did = 'test';
+
+insert into designer values('test', '1234', '910709', 'user1@gmail.com', '010-1234-5678', '서울시 종로구', '대왕빌딩 602호', '152342', true, 0 , 'default.jpg', '홍길동');
+insert into designer(did,dpw,dname,birth,demail,dphone,address1,address2,dzipcode,dfilename,validation,introduction) 
+values('test','1234','김길동','930709','user2@gmail.com','010-1414-1414','서울시 종로구','대왕빌딩 601호','123412','designer.jpg',
+false,'미용사(일반) 자격증 보유 -레이어드컷 / 단발 레이어드컷 / 태슬컷 -레이어드컷 / 단발 레이어드컷 / 태슬컷');
 
 select * from designer;
+update designer
+	set validation = true
+	where did = 'test';
+delete from designer;
 
 
 
 
+
+use beom;
 
 CREATE TABLE hairmenu (
-       menuno               int NOT NULL	auto_increment,
+       menuno               int NOT NULL auto_increment,
        price                int NOT NULL,
        menu                 varchar(20) NOT NULL,
        did                  varchar(50) NOT NULL,
        cateno               int NOT NULL,
+       hgender              varchar(10) not null CHECK(hgender IN('여자','남자')),
        PRIMARY KEY (menuno), 
-       FOREIGN KEY (cateno)
-                             REFERENCES category(cateno), 
-       FOREIGN KEY (did)
-                             REFERENCES designer(did)
+       FOREIGN KEY (cateno)  REFERENCES category(cateno), 
+       FOREIGN KEY (did) REFERENCES designer(did)
 );
 
-insert into hairmenu(did,price,menu,cateno) values('designer1','20000','남성 디자인컷',1);
+use beom;
+delete from hairmenu where menuno = 4;
+insert into hairmenu(did,price,menu,cateno,hgender) values('test','40000','두피스케일링커트',1,'남자');
+insert into hairmenu(did,price,menu,cateno,hgender) values('test','20000','일반펌',2,'여자');
+
 insert into hairmenu(did,price,menu,cateno) values('designer1','50000','남성 펌',2);
 insert into hairmenu(did,price,menu,cateno) values('designer1','30000','여성 디자인컷',1);
 insert into hairmenu(did,price,menu,cateno) values('designer1','10000','여성 펌',2);
 
-select * from hairmenu
-	where did = 'designer1'
-    order by cateno;
+select * from enroll;
 
 
 CREATE TABLE enroll (
        enrollno             int NOT NULL	auto_increment,
        enrolldate           varchar(20) NOT NULL,
        enrolltime           varchar(20) NOT NULL,
+       eprice				int not null,
+       emenu				varchar(20) not null,
        menuno               int NOT NULL,
        did                  varchar(50) NOT NULL,
        PRIMARY KEY (enrollno), 
@@ -75,9 +99,13 @@ CREATE TABLE enroll (
                              REFERENCES designer(did)
 );
 
-insert into enroll(did,menuno,enrolldate,enrolltime) values('designer1','1','2022-07-10','12:04');
-insert into enroll(did,menuno,enrolldate,enrolltime) values('designer1','2','2022-07-10','12:04');
-insert into enroll(did,menuno,enrolldate,enrolltime) values('designer1','3','2022-07-10','12:04');
+drop table enroll;
+
+insert into enroll(did,menuno,enrolldate,enrolltime,eprice,emenu) values('test','2','2022-07-17','14:34','20000','디자인컷');
+insert into enroll(did,menuno,enrolldate,enrolltime,eprice,emenu) values('test','5','2022-07-17','14:34','40000','두피스케일링커트');
+insert into enroll(did,menuno,enrolldate,enrolltime) values('test','3','2022-07-15','10:20');
+
+
 
 select * from enroll;
 
@@ -122,9 +150,11 @@ CREATE TABLE reserve (
                              REFERENCES user(uid)
 );
 
+
+
 insert into reserve(enrollno, uid, message) values(2,'user1','안녕하세요');
 insert into reserve(enrollno, uid, message) values(1,'user2','안녕하세요 반갑습니다');
-insert into reserve(enrollno, uid, message) values(3,'user1','안녕하세요 ㅎㅇㅎㅇ');
+insert into reserve(enrollno, uid, message) values(1,'user1','안녕하세요 ㅎㅇㅎㅇ');
 
 delete from reserve where uid = 'user1';
 select * from reserve;
@@ -132,7 +162,6 @@ select * from reserve;
 
 CREATE TABLE certification (
        did                  varchar(50) NOT NULL,
-       licensetype          varchar(20) NOT NULL,
        licenseno            varchar(50) NULL,
        licensedate          varchar(20) NULL,
        uniquecode1          varchar(50) NULL,
@@ -142,23 +171,26 @@ CREATE TABLE certification (
                              REFERENCES designer(did)
 );
 
-insert into certification(did, licensetype, licenseno, licensedate,uniquecode1) values('designer1','수첩형 디자이너','12345678901A','20050101','0901234567');
-insert into certification(did, licensetype,uniquecode2) values('designer2','상장형 디자이너','0909873165');
+drop table certification;
 
+insert into certification(did, licenseno, licensedate,uniquecode1) values('test','12345678901A','20050101','0901234567');
+insert into certification(did, uniquecode2) values('test1','0909873165');
+
+use dbtest;
 select * from certification;
 
 
 CREATE TABLE style (
-       imgno                int NOT NULL	auto_increment,
-       sfilename            varchar(50) NOT NULL,
-       did                  varchar(50) NOT NULL,
-       gender               varchar(10) NULL,
-       imgtype              varchar(50) NULL,
-       imgcode              blob NULL,
-       PRIMARY KEY (imgno), 
-       FOREIGN KEY (did)
-                             REFERENCES designer(did)
+imageno int NOT NULL AUTO_INCREMENT, -- 정렬할때 사용
+imagetype VARCHAR(30) NOT NULL,      -- 이미지 타입
+imagecode LONGBLOB NOT NULL,         -- 이미지 바이너리 코드저장 
+did VARCHAR(50) NOT NULL,            -- 업로드한 디자이너 구분
+gender VARCHAR(10) DEFAULT '여자' NOT NULL      -- 사진정렬시 여자 남자로 구분
+    CHECK(gender IN('여자','남자')),
+PRIMARY KEY (imageno),
+FOREIGN KEY (did) REFERENCES designer(did)
 );
+
 
 insert into style(sfilename,did,gender,imgtype) values('style1.jpg','designer1','male','akdf812u91212o83');
 insert into style(sfilename,did,gender,imgtype) values('style2.jpg','designer1','female','akdf812u91212o83');
@@ -170,9 +202,9 @@ select * from style;
 CREATE TABLE review (
        rno                  int NOT NULL	auto_increment,
        rtitle               varchar(20) NOT NULL,
-       rcontent             text NOT NULL,
+       rcontent             varchar(200) NOT NULL,
        rdate                varchar(20) NOT NULL,
-       star                 int DEFAULT 5 NULL,
+       star                 int DEFAULT 5 not NULL,
        rfilename            varchar(50) NULL,
        uid                  varchar(20) NOT NULL,
        did                  varchar(50) NOT NULL,
@@ -182,9 +214,10 @@ CREATE TABLE review (
        FOREIGN KEY (uid)
                              REFERENCES user(uid)
 );
-
-insert into review(rtitle,rcontent,rdate,rfilename,uid,did) values('최고에요!','맘에 들어요~',sysdate(),'photo1.jpg','user1','designer1');
-insert into review(rtitle,rcontent,rdate,rfilename,uid,did) values('최고에요!','맘에 들어요~',sysdate(),'photo5.jpg','user1','designer1');
+alter table review modify rcontent varchar(200);
+drop table review;
+insert into review(rtitle,rcontent,rdate,rfilename,uid,did) values('최고에요!','맘에 들어요~',sysdate(),'photo1.jpg','user1','test');
+insert into review(rtitle,rcontent,rdate,rfilename,uid,did) values('최고에요!','맘에 들어요~',sysdate(),'photo5.jpg','user1','test');
 insert into review(rtitle,rcontent,rdate,rfilename,uid,did) values('최고에요!','맘에 들어요~',sysdate(),'photo3.jpg','user2','designer1');
 
 delete from review where uid = 'user1';
@@ -206,16 +239,31 @@ CREATE TABLE notice (
 insert into notice(uid,ntitle,ndate,ncontent) values('admin','공지사항입니다',sysdate(),'공지사항 내용입니다.');
 
 
-use dbtest;
+use beom;
 
 select * from designer;
 
-select distinct d.dname, e.enrolldate, e.enrolltime, h.menu, h.price, h.cateno
-	from designer d
-    left outer join enroll e
-	on d.did = e.did
-    left outer join hairmenu h
-    on d.did = h.did
-    where d.dname = '홍길동';
+-- 예약 등록 시간 list
     
+select  e.enrolldate, e.enrolltime, e.emenu, h.hgender ,e.eprice
+	from  hairmenu h
+    left join enroll e
+    on e.menuno = h.menuno
+    where e.did = 'test';
+    
+    
+use beom;
+select u.uname, h.hgender, e.enrolldate, e.enrolltime, e.emenu, e.eprice, r.message
+ from reserve r
+ left join user u
+ on r.uid = u.uid	
+ left join enroll e
+ on r.enrollno = e.enrollno
+ left join hairmenu h
+ on h.menuno = e.menuno
+ where r.reserveno = 2 and e.did = 'test';
+    
+    
+    
+
 
