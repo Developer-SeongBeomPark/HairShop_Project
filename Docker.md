@@ -67,7 +67,7 @@ war 파일이 잘 만들어졌는지는 다음과 같이 확인하면 된다.
 
 이제 cmd or windows powershell을 이용해 docker image를 만들 것이다.<br>
 
-먼저 CLI(cmd,powershell etc...)내에 Docker를 설치한다. ([sudo 없이 사용하기](https://subicura.com/2017/01/19/docker-guide-for-beginners-2.html) 해당 링크를 이용하면 sudo를 생략할 수 있다.)<br>
+
 
 ```cd build/libs``` : 폴더 위치 이동
 
@@ -134,6 +134,66 @@ DockerHub에 접속해 다음과 같이 두 개의 repository를 create한다.
 ##### 원격 서버에서 Image pull하기
 
 ---
+
+![image-20220726160901995](Docker.assets/image-20220726160901995.png)
+
+putty를 이용해 할당 받은 서버로 원격 접속한다.<br>
+
+Docker를 설치한다.<br>
+
+```
+sudo apt update
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+sudo apt install docker-ce
+```
+
+[sudo 없이 사용하기](https://subicura.com/2017/01/19/docker-guide-for-beginners-2.html) 해당 링크를 이용하면 sudo를 생략할 수 있다.
+
+
+
+```docker login``` : 본인의 계정으로 로그인한다.<br>
+
+```docker pull [DockerHub Respository name]``` : DockerHub에 올려둔 이미지를 pull 받는다.
+
+![image-20220726162429213](Docker.assets/image-20220726162429213.png)
+
+![image-20220726162444716](Docker.assets/image-20220726162444716.png)
+
+<br>
+
+```docker images``` : 받아온 image들의 목록 출력
+
+![image-20220726162543669](Docker.assets/image-20220726162543669.png)
+
+<br>
+
+
+
+```docker network create [network 별명]```<br>
+
+```docker volume create [volume 별명]```<br>
+
+```docker run -d  --name [mysql container 별명] -e MYSQL_ROOT_PASSWORD=[root 계정 비밀번호] -p 3306:3306 --network [network id] -v [volume id]:/var/lib/mysql [mysql repository name]``` : mysql container 생성 및 실행<br>
+
+![image-20220726164603896](Docker.assets/image-20220726164603896.png)
+
+```docker run --name [프로젝트 container 별명] -p 8000:8000 --network [network id] [프로젝트 repository name]``` : 프로젝트 container 생성 및 실행 
+
+![image-20220726164802083](Docker.assets/image-20220726164802083.png)
+
+
+
+```docker ps -a``` : 컨테이너 목록 확인
+
+![image-20220726164849989](Docker.assets/image-20220726164849989.png)
+
+이와 같이 출력된다면 정상 작동하는 것이다.
+
+
+
+![image-20220726164948300](Docker.assets/image-20220726164948300.png)
 
 
 
