@@ -59,6 +59,7 @@ delete from designer;
 
 
 use beom;
+select * from designer;
 
 CREATE TABLE hairmenu (
        menuno               int NOT NULL auto_increment,
@@ -262,6 +263,12 @@ select u.uname, h.hgender, e.enrolldate, e.enrolltime, e.emenu, e.eprice, r.mess
  left join hairmenu h
  on h.menuno = e.menuno
  where r.reserveno = 2 and e.did = 'test';
+ 
+use beom;
+select * from reserve;
+
+
+select * from category;
     
     
     
