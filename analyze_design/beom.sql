@@ -21,7 +21,7 @@ CREATE TABLE designer (
        birth                varchar(6) NOT NULL,
        demail               varchar(50) NOT NULL,
        dphone               varchar(20) NOT NULL,
-       hairshop				varchar(20) not null,
+       hairshop					varchar(20) NOT NULL,
        address1             varchar(60) NOT NULL,
        address2             varchar(60) NOT NULL,
        dzipcode             varchar(20) NOT NULL,
@@ -144,6 +144,7 @@ CREATE TABLE reserve (
        uid                  varchar(20) NOT NULL,
        message              varCHAR(100) NULL,
        enrollno             int NOT NULL,
+       rconfig				boolean default false check(rconfig in (false, true)),
        PRIMARY KEY (reserveno), 
        FOREIGN KEY (enrollno)
                              REFERENCES enroll(enrollno), 
@@ -151,7 +152,9 @@ CREATE TABLE reserve (
                              REFERENCES user(uid)
 );
 
-
+alter table reserve add rconfig boolean DEFAULT false
+                                   CHECK (rconfig IN (false, true));
+delete from reserve;
 
 insert into reserve(enrollno, uid, message) values(2,'user1','안녕하세요');
 insert into reserve(enrollno, uid, message) values(1,'user2','안녕하세요 반갑습니다');
@@ -268,7 +271,11 @@ use beom;
 select * from reserve;
 
 
-select * from category;
+select * from designer;
+
+select * from reserve;
+
+
     
     
     
