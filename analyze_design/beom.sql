@@ -67,11 +67,13 @@ CREATE TABLE hairmenu (
        menu                 varchar(20) NOT NULL,
        did                  varchar(50) NOT NULL,
        cateno               int NOT NULL,
-       hgender              varchar(10) not null CHECK(hgender IN('여자','남자')),
+       hgender              varchar(10) not null CHECK(hgender IN('FEMALE','MALE')),
        PRIMARY KEY (menuno), 
        FOREIGN KEY (cateno)  REFERENCES category(cateno), 
        FOREIGN KEY (did) REFERENCES designer(did)
 );
+
+select * from review;
 
 use beom;
 delete from hairmenu where menuno = 4;
@@ -189,8 +191,8 @@ imageno int NOT NULL AUTO_INCREMENT, -- 정렬할때 사용
 imagetype VARCHAR(30) NOT NULL,      -- 이미지 타입
 imagecode LONGBLOB NOT NULL,         -- 이미지 바이너리 코드저장 
 did VARCHAR(50) NOT NULL,            -- 업로드한 디자이너 구분
-gender VARCHAR(10) DEFAULT '여자' NOT NULL      -- 사진정렬시 여자 남자로 구분
-    CHECK(gender IN('여자','남자')),
+gender VARCHAR(10) DEFAULT 'FEMALE' NOT NULL      -- 사진정렬시 여자 남자로 구분
+    CHECK(gender IN('FEMALE','MALE')),
 PRIMARY KEY (imageno),
 FOREIGN KEY (did) REFERENCES designer(did)
 );
@@ -257,7 +259,7 @@ select  e.enrolldate, e.enrolltime, e.emenu, h.hgender ,e.eprice
     
     
 use beom;
-select u.uname, h.hgender, e.enrolldate, e.enrolltime, e.emenu, e.eprice, r.message
+select u.uname, h.hgender, e.enrolldate, e.enrolltime, e.emenu, e.eprice, r.message, r.rconfig
  from reserve r
  left join user u
  on r.uid = u.uid	
@@ -265,7 +267,7 @@ select u.uname, h.hgender, e.enrolldate, e.enrolltime, e.emenu, e.eprice, r.mess
  on r.enrollno = e.enrollno
  left join hairmenu h
  on h.menuno = e.menuno
- where r.reserveno = 2 and e.did = 'test';
+ where e.did = 'test';
  
 use beom;
 select * from reserve;
@@ -273,7 +275,20 @@ select * from reserve;
 
 select * from designer;
 
-select * from reserve;
+select * from user;
+insert into user values('admin', '1234', 'admin@mail.com', '관리자', '010-1111-1111','A');
+
+delete from user
+	where uname = '관리자';
+    
+
+select * from hairmenu;
+
+select menuno
+	from hairmenu
+    where did = 'test' and menu = '일반 컷';
+
+
 
 
     

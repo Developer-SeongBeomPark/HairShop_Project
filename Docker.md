@@ -43,7 +43,11 @@
 
 여기서 주의할 점이 ![image-20220726145716727](Docker.assets/image-20220726145716727.png)
 
-이 부분이다. "mysql" 은 추후에 생성할 mysql docker image의 이름이다. <br><br>
+이 부분이다. "mysql" 은 추후에 생성할 mysql docker image의 이름이다. <br>
+
+또, ```useSSL=false&allowPublicKeyRetrieval=true``` 이 부분이 빠진다면 DB 연결 실패 오류가 발생할 것이다.
+
+<br><br>
 
 
 
@@ -197,5 +201,25 @@ sudo apt install docker-ce
 
 
 
+(+ 추가)
 
+putty에서 mysql 접속해 select문으로 데이터를 출력하는 경우 한글이 "?" 로 출력될 수 있다.![image-20220729115112104](Docker.assets/image-20220729115112104.png)
+
+
+
+<br>
+
+이때 ```show variables like 'char%';``` 를 이용해 인코딩 상태를 보면 다음과 같다. ![image-20220729115251432](Docker.assets/image-20220729115251432.png)
+
+<br>
+
+```set [Variable name] = [value]``` 를 이용해 value 값을 바꿔준다.
+
+![image-20220729115449494](Docker.assets/image-20220729115449494.png)
+
+
+
+결과 :
+
+![image-20220729115603876](Docker.assets/image-20220729115603876.png)
 
