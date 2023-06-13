@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.heart.HeartMapper">
+
+	<select id="read" parameterType="String" resultType="com.study.heart.HeartDTO">
+		SELECT *
+		FROM heart
+		WHERE uid=#{uid} and did=#{did}
+	</select>
+
+	<insert id="addCheck" parameterType="Map">
+		insert into heart(uid, did)
+		values(#{uid}, #{did})
+	</insert>
+
+	<update id="checkPlus" parameterType="Map">
+		update heart
+		set heart_chk = 1
+		where did=#{did} and uid=#{uid}
+	</update>
+	<update id="heartPlus" parameterType="Map">
+		update designer
+		set likecnt = likecnt+1
+		where did=#{did}
+	</update>
+	
+	
+	<update id="checkMinus" parameterType="Map">
+		update heart
+		set heart_chk = 0
+		where did=#{did} and uid=#{uid}
+	</update>
+	<update id="heartMinus" parameterType="Map">
+		update designer
+		set likecnt = likecnt-1
+		where did=#{did}
+	</update>
+	
+	<select id="likecnt" parameterType="com.study.designer.DesignerDTO" resultType="com.study.designer.DesignerDTO">
+		select likecnt
+		from designer
+		where did=#{did}
+	</select>
+	
+	<select id="getheartchk" parameterType="Map" resultType="int">
+		select heart_chk
+		from heart
+		where uid = #{uid} and did = #{did}
+	</select>
+	
+	<select id="col_chk" parameterType="Map" resultType="int">
+		select count(*)
+		from heart
+		where uid = #{uid} and did = #{did}
+	</select>
+
+</mapper>
+

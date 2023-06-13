@@ -1,0 +1,22 @@
+.container{
+    overflow: auto;
+    margin:20px auto;
+}
+.container h3{
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+table{
+    margin: 10px auto;
+}
+th{
+	background-color:black;
+	color:white;
+}
+th,td{
+    border: 1px solid;
+    padding :5px;
+    text-align:center;
+    font-size:1.5rem;
+}

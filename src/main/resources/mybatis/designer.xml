@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.designer.DesignerMapper">
+
+	<insert id="dcreate"
+		parameterType="com.study.designer.DesignerDTO">
+		insert into designer(
+		did,dpw,dname,birth,hairshop,demail,dphone,address1,address2,dzipcode
+		)
+		values(
+		#{did},#{dpw},#{dname},#{birth},#{hairshop},#{demail},#{dphone},#{address1},#{address2},#{dzipcode}
+		)
+
+	</insert>
+
+	<insert id="lcreate1"
+		parameterType="com.study.designer.LicenseDTO">
+		insert into certification( did, licenseno,
+		licensedate,uniquecode1 )
+		values(
+		#{did},#{licenseno},#{licensedate},#{uniquecode1} )
+	</insert>
+
+	<insert id="lcreate2"
+		parameterType="com.study.designer.LicenseDTO">
+		insert into certification( did, uniquecode2 )
+		values(
+		#{did},#{uniquecode2} )
+	</insert>
+
+	<select id="duplicatedId" parameterType="String"
+		resultType="int">
+		SELECT COUNT(did)
+		FROM designer
+		WHERE did=#{did}
+	</select>
+
+	<select id="duplicatedEmail" parameterType="String"
+		resultType="int">
+		SELECT COUNT(demail)
+		FROM designer
+		WHERE demail=#{demail}
+	</select>
+
+	<select id="dlogin" parameterType="Map" resultType="int">
+		select
+		count(did)
+		from designer
+		where did = #{did} and dpw = #{dpw}
+	</select>
+
+	<select id="dread" parameterType="String"
+		resultType="com.study.designer.DesignerDTO">
+		select did, dname, validation, dfilename
+		from designer
+		where did =
+		#{did}
+	</select>
+
+	<select id="dmypage" parameterType="String"
+		resultType="com.study.designer.DesignerDTO">
+		select *
+		from designer
+		where did = #{did}
+	</select>
+
+	<update id="intro_update" parameterType="Map">
+		update designer
+		set
+		introduction = #{introduction}
+		where did = #{did}
+	</update>
+
+	<select id="license" parameterType="String"
+		resultType="com.study.designer.LicenseDTO">
+		select *
+		from certification
+		where did = #{did}
+	</select>
+
+	<update id="dupdate"
+		parameterType="com.study.designer.DesignerDTO">
+		update designer
+		set dname = #{dname},
+		demail = #{demail},
+		dphone = #{dphone},
+		hairshop = #{hairshop},
+		dzipcode = #{dzipcode},
+		address1 = #{address1},
+		address2 = #{address2}
+		where did = #{did}
+	</update>
+
+
+	<resultMap type="com.study.hairmenu.HairmenuDTO"
+		id="enrolllist">
+		<result property="hgender" column="hgender" />
+		<result property="menuno" column="menuno" />
+		<collection property="edto" column="menuno" javaType="List"
+			ofType="com.study.enroll.EnrollDTO">
+			<result property="enrollno" column="enrollno" />
+			<result property="enrolldate" column="enrolldate" />
+			<result property="enrolltime" column="enrolltime" />
+			<result property="emenu" column="emenu" />
+			<result property="eprice" column="eprice" />
+		</collection>
+	</resultMap>
+
+	<select id="enroll_list" parameterType="String"
+		resultMap="enrolllist">
+		select e.enrollno, e.enrolldate, e.enrolltime, e.emenu,
+		h.hgender,e.eprice
+		from hairmenu h
+		left join enroll e
+		on e.menuno =
+		h.menuno
+		where e.did = #{did}
+		order by e.enrolldate desc
+	</select>
+
+
+
+
+
+	<resultMap type="com.study.reserve.ReserveDTO"
+		id="reserveList">
+		<result property="message" column="message" />
+		<result property="reserveno" column="reserveno" />
+		<result property="rconfig" column="rconfig" />
+		<association property="udto"
+			javaType="com.study.user.UserDTO">
+			<result property="uname" column="uname" />
+		</association>
+		<association property="edto"
+			javaType="com.study.enroll.EnrollDTO">
+			<result property="enrolldate" column="enrolldate" />
+			<result property="enrolltime" column="enrolltime" />
+			<result property="emenu" column="emenu" />
+			<result property="eprice" column="eprice" />
+			<association property="hdto"
+				javaType="com.study.hairmenu.HairmenuDTO">
+				<result property="hgender" column="hgender" />
+			</association>
+		</association>
+	</resultMap>
+
+	<select id="reserve_list" parameterType="String"
+		resultMap="reserveList">
+		select u.uname, h.hgender, e.enrolldate, e.enrolltime,
+		e.emenu, e.eprice, r.reserveno, r.message, r.rconfig
+		from reserve r
+		left join user u
+		on r.uid = u.uid
+		left join enroll e
+		on r.enrollno =
+		e.enrollno
+		left join hairmenu h
+		on h.menuno = e.menuno
+		where e.did =
+		#{did}
+		order by r.reserveno;
+	</select>
+
+
+	<update id="dupdateFile" parameterType="Map">
+		update designer
+		set
+		dfilename = #{dfilename}
+		where did = #{did}
+	</update>
+
+	<resultMap type="com.study.reserve.ReserveDTO"
+		id="reservedetail">
+		<result property="message" column="message" />
+		<association property="udto"
+			javaType="com.study.user.UserDTO">
+			<result property="uname" column="uname" />
+		</association>
+		<association property="edto"
+			javaType="com.study.enroll.EnrollDTO">
+			<result property="enrolldate" column="enrolldate" />
+			<result property="enrolltime" column="enrolltime" />
+			<result property="emenu" column="emenu" />
+			<result property="eprice" column="eprice" />
+			<association property="hdto"
+				javaType="com.study.hairmenu.HairmenuDTO">
+				<result property="hgender" column="hgender" />
+			</association>
+		</association>
+	</resultMap>
+
+	<select id="read_message" parameterType="Map"
+		resultMap="reservedetail">
+		select u.uname, h.hgender, e.enrolldate, e.enrolltime,
+		e.emenu, e.eprice, r.message
+		from reserve r
+		left join user u
+		on r.uid =
+		u.uid
+		left join enroll e
+		on r.enrollno = e.enrollno
+		left join hairmenu h
+		on h.menuno = e.menuno
+		where r.reserveno = #{rnum} and e.did = #{did}
+	</select>
+
+	<select id="reserve_cnt" parameterType="int" resultType="int">
+		select
+		count(*)
+		from reserve
+		where enrollno = #{enrollno}
+	</select>
+
+	<delete id="delete_enroll" parameterType="int">
+		delete
+		from enroll
+		where enrollno = #{enrollno}
+	</delete>
+
+
+	<select id="findPw" parameterType="Map" resultType="String">
+		SELECT dpw
+		FROM designer
+		WHERE did=#{did} and demail=#{demail}
+	</select>
+
+	<select id="findId" parameterType="Map" resultType="String">
+		SELECT did
+		FROM designer
+		WHERE dname=#{dname} and demail=#{demail}
+	</select>
+
+
+	<update id="rconfig" parameterType="int">
+		update reserve
+		set rconfig =
+		true
+		where reserveno = #{reserveno}
+	</update>
+
+	<select id="total" parameterType="Map" resultType="int">
+		SELECT count(*)
+		FROM designer
+				<where>
+			<choose>
+				<when test="col=='dname'">
+					dname like concat('%',#{word},'%')
+				</when>
+				<when test="col=='did'">
+					did like concat('%',#{word},'%')
+				</when>
+				<when test="col=='address1'">
+					address1 like concat('%',#{word},'%')
+				</when>
+				<when test="col=='hairshop'">
+					hairshop like concat('%',#{word},'%')
+				</when>
+			</choose>
+		</where>
+	</select>
+	
+	<select id="getList" parameterType="String"
+        resultType="com.study.designer.DesignerDTO">
+        SELECT hairshop, address1, dname, did, likecnt
+        FROM designer
+
+        <where>
+        	did IN (SELECT distinct did FROM enroll where enrolldate >= curdate())
+        	and
+            <choose>
+                <when test="searchWrd != null">
+                    address1 like concat('%',#{searchWrd},'%') or
+                    hairshop like concat('%',#{searchWrd},'%')
+                </when>
+                <when test="searchWrd != ''">
+                    address1 like concat('%',#{searchWrd},'%') or
+                    hairshop like concat('%',#{searchWrd},'%')
+                </when>
+            </choose>
+        </where>
+        order by likecnt desc
+
+    </select>
+
+	<select id="list" parameterType="Map"
+		resultType="com.study.designer.DesignerDTO">
+		SELECT *
+		FROM designer
+		<where>
+			<choose>
+				<when test="col=='dname'">
+					dname like concat('%',#{word},'%')
+				</when>
+				<when test="col=='did'">
+					did like concat('%',#{word},'%')
+				</when>
+				<when test="col=='address1'">
+					address1 like concat('%',#{word},'%')
+				</when>
+				<when test="col=='hairshop'">
+					hairshop like concat('%',#{word},'%')
+				</when>
+			</choose>
+		</where>
+		ORDER BY dname
+		limit #{sno}, #{eno}
+	</select>
+
+
+	<update id="updateValidation"
+		parameterType="com.study.designer.DesignerDTO">
+		UPDATE designer
+		SET validation=1
+		WHERE did = #{did}
+	</update>
+
+	<update id="lupdate1"
+		parameterType="com.study.designer.LicenseDTO">
+		UPDATE certification
+		SET licenseno = #{licenseno},
+		licensedate = #{licensedate},
+		uniquecode1 = #{uniquecode1}
+		WHERE did = #{did}
+	</update>
+
+	<update id="lupdate2"
+		parameterType="com.study.designer.LicenseDTO">
+		UPDATE certification
+		SET uniquecode2 = #{uniquecode2}
+		WHERE did = #{did}
+
+	</update>
+
+	<delete id="delete" parameterType="String">
+		DELETE FROM designer
+		WHERE did = #{did}
+	</delete>
+
+	
+	<resultMap type="com.study.reserve.ReserveDTO"
+		id="r_detail">
+		<association property="udto"
+			javaType="com.study.user.UserDTO">
+			<result property="uid" column="uid" />
+			<result property="uname" column="uname" />
+			<result property="uemail" column="uemail" />
+		</association>
+		<association property="edto"
+			javaType="com.study.enroll.EnrollDTO">
+			<result property="enrolldate" column="enrolldate" />
+			<result property="enrolltime" column="enrolltime" />
+			<result property="emenu" column="emenu" />
+			<result property="eprice" column="eprice" />
+		</association>
+	</resultMap>
+
+	<select id="reserve_detail" parameterType="int"
+		resultMap="r_detail">
+		select u.uid, u.uname, u.uemail, e.enrolldate, e.enrolltime,
+		e.emenu, e.eprice
+		from reserve r
+		left join user u
+		on r.uid = u.uid
+		left join enroll e
+		on r.enrollno = e.enrollno
+		where reserveno = #{reserveno};
+	</select>
+	
+	<select id="searchList" parameterType="Map"
+		resultType="com.study.designer.DesignerDTO">
+		SELECT dfilename, did, dname, address1, hairshop, likecnt
+		FROM designer
+		WHERE
+			did IN (SELECT distinct did FROM enroll where enrolldate >= curdate()) 
+			<choose>
+				<when test="col=='address1'">
+					and address1 like concat('%',#{word},'%')
+				</when>
+				<when test="col=='hairshop'">
+					and hairshop like concat('%',#{word},'%')
+				</when>
+			</choose>		
+		order by likecnt desc
+	</select>
+
+	<select id="chkReserve" parameterType="String" resultType="int">
+		select count(*)
+		from reserve
+		where enrollno in 
+			(select enrollno from enroll where did=#{did})
+	</select>
+	<delete id="delReserve" parameterType="String">
+		delete from reserve
+		where enrollno in 
+			(select enrollno from enroll where did=#{did})
+	</delete>
+</mapper>

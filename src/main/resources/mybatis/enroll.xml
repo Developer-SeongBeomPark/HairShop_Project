@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.enroll.EnrollMapper">
+
+
+
+	<select id="menuInfo" parameterType="Map"
+		resultType="com.study.hairmenu.HairmenuDTO">
+		SELECT
+		h.menu,
+		h.price
+		FROM hairmenu h LEFT JOIN category c
+		ON
+		h.cateno = c.cateno
+		WHERE h.did = #{id} and c.catename = #{catename}
+		and h.hgender = #{hgender}
+
+
+	</select>
+
+	<resultMap type="com.study.hairmenu.HairmenuDTO"
+		id="hairmenuInfo">
+		<result property="menu" column="menu" />
+		<result property="price" column="price" />
+		<result property="did" column="did" />
+		<result property="hgender" column="hgender" />
+		<result property="menuno" column="menuno" />
+		<collection property="category" resultMap="categoryInfo" />
+	</resultMap>
+
+	<resultMap type="com.study.category.CategoryDTO"
+		id="categoryInfo">
+		<result property="catename" column="catename" />
+	</resultMap>
+
+	<select id="list" parameterType="String"
+		resultMap="hairmenuInfo">
+
+		SELECT
+		h.menu,
+		h.menuno,
+		h.price,
+		h.did,
+		h.hgender,
+		c.catename
+		FROM hairmenu h LEFT
+		JOIN category c
+		ON h.cateno = c.cateno where h.did = #{id}
+
+	</select>
+
+	<select id="catenameList" parameterType="String"
+		resultType="com.study.category.CategoryDTO">
+		SELECT c.catename
+		FROM hairmenu h LEFT JOIN category c
+		ON h.cateno = c.cateno
+		WHERE h.did = #{id}
+	</select>
+
+	<select id="menuPriceList" parameterType="String"
+		resultType="com.study.hairmenu.HairmenuDTO">
+		SELECT menu,price,hgender
+		FROM hairmenu
+		WHERE did = #{id}
+
+	</select>
+
+	<select id="menunoGet" parameterType="Map" resultType="int">
+		SELECT menuno
+		FROM hairmenu
+		WHERE did = #{did} and menu = #{menu}
+	</select>
+
+	<insert id="enrollInput" parameterType="Map">
+		INSERT INTO
+		enroll (enrolldate,enrolltime,emenu,menuno,eprice,did)
+		values(#{date},#{time},#{emenu},#{menuno},#{eprice},#{did})
+	</insert>
+
+	<resultMap type="com.study.enroll.EnrollDTO"
+		id="enrollListDTO">
+		<result property="enrollno" column="enrollno" />
+		<result property="enrolldate" column="enrolldate" />
+		<result property="enrolltime" column="enrolltime" />
+		<result property="eprice" column="eprice" />
+		<result property="emenu" column="emenu" />
+		<result property="did" column="did" />
+		<collection property="hairmenu"
+			resultMap="hairmenuGengerDTO" />
+	</resultMap>
+
+	<resultMap type="com.study.hairmenu.HairmenuDTO"
+		id="hairmenuGengerDTO">
+		<result property="hgender" column="hgender" />
+	</resultMap>
+
+	<select id="enrollList" parameterType="String"
+		resultMap="enrollListDTO">
+		SELECT
+		e.enrollno,e.did,e.menuno,e.enrolldate,e.enrolltime,e.eprice,e.emenu,h.hgender
+		FROM enroll e LEFT JOIN hairmenu h
+		ON e.menuno = h.menuno
+		WHERE e.did =
+		#{did}
+	</select>
+
+	<delete id="enrollDelete" parameterType="int">
+		DELETE FROM enroll
+		WHERE
+		enrollno = #{deleteNo}
+	</delete>
+
+	<insert id="userInsert" parameterType="Map">
+		INSERT INTO reserve
+		(uid,message,enrollno) values(#{uid},#{message},#{enrollno})
+	</insert>
+	
+	<resultMap type="com.study.enroll.EnrollDTO"
+		id="asOfEnrollListDTO">
+		<result property="enrollno" column="enrollno" />
+		<result property="enrolldate" column="enrolldate" />
+		<result property="enrolltime" column="enrolltime" />
+		<result property="eprice" column="eprice" />
+		<result property="emenu" column="emenu" />
+		<result property="did" column="did" />
+		<collection property="hairmenu"
+			resultMap="hairmenuGengerDTO" />
+	</resultMap>
+
+
+	<select id="asOfEnrollList" parameterType="String"
+		resultMap="asOfEnrollListDTO">
+		SELECT
+		e.enrollno,e.did,e.menuno,e.enrolldate,e.enrolltime,e.eprice,e.emenu,h.hgender
+		FROM enroll e LEFT JOIN hairmenu h
+		ON e.menuno = h.menuno
+		WHERE (e.did = #{did} AND e.enrolldate > curdate())
+			  OR
+			  (e.did = #{did} AND (e.enrolldate = curdate() AND e.enrolltime > curtime()))
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	<resultMap type="com.study.enroll.EnrollDTO" id="EnrollInfo">
+		<result property="enrolldate" column="enrolldate" />
+		<result property="enrolltime" column="enrolltime" />
+		<result property="emenu" column="emenu" />
+		<result property="eprice" column="eprice" />
+		<collection property="userInfo"	resultMap="UserInfo" /> 
+		<collection property="reserveInfo" resultMap="ReserveInfo" /> 
+	</resultMap>
+	
+	<resultMap type="com.study.user.UserDTO" id="UserInfo">
+		<result property="uid" column="uid" />
+	</resultMap>
+	
+	<resultMap type="com.study.reserve.ReserveDTO" id="ReserveInfo">
+		<result property="reserveno" column="reserveno" />
+	</resultMap>
+	
+	<select id="infoList" parameterType="String"
+		resultMap="EnrollInfo">
+		SELECT
+		r.reserveno,
+		u.uid,
+		e.enrolldate,
+		e.enrolltime,
+		e.emenu,
+		e.eprice
+		FROM user u  
+		LEFT JOIN reserve r ON u.uid = r.uid
+		LEFT JOIN enroll e ON e.enrollno = r.enrollno
+		WHERE e.did = #{did} and e.enrolldate = curdate();
+	</select>
+	
+	<select id="checking" parameterType="String" resultType="int">
+		select exists
+		(select r.enrollno from reserve r 
+		LEFT JOIN enroll e ON r.enrollno = e.enrollno where r.enrollno = #{enrollno} limit 1) 
+		as success;
+	</select>
+	
+	
+
+
+
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.review.ReviewMapper">
+
+	<select id="starAvg0" resultType="int">
+		select count(*) from review where did=#{did}
+	</select>
+
+	<select id="starAvg" resultType="double">
+		select avg(star) from review where did=#{did}
+	</select>
+
+	<delete id="delete" parameterType="int">
+		delete FROM review
+		WHERE rno = #{rno}
+	</delete>
+
+	<update id="update" parameterType="com.study.review.ReviewDTO">
+		update review
+		<set>
+			 rtitle = #{rtitle},
+			rcontent = #{rcontent},
+		 	star = #{star},
+		 	<if test="rfilename != null or rfilename !='' or rfilename !='no.jpg'">
+			rfilename = #{rfilename}
+			</if>
+		</set>
+		where rno = #{rno}
+	</update>
+
+	<insert id="create" parameterType="com.study.review.ReviewDTO">
+		insert into review(uid, rtitle, rcontent, rdate, rno, star, did, rfilename)
+    	values(#{uid},#{rtitle}, #{rcontent}, sysdate(), #{rno}, #{star}, #{did}, #{rfilename})
+	</insert>
+
+	<select id="read" parameterType="int" resultType="com.study.review.ReviewDTO">
+	    select * from review
+	    where rno = #{rno}
+	</select>
+
+	<select id="list" parameterType="Map"
+		resultType="com.study.review.ReviewDTO">
+		select *
+		from review
+		where did=#{did}
+			<choose>
+                <when test="col=='rtitle'">
+                    and rtitle like CONCAT('%',#{word},'%')
+                </when>
+                <when test="col=='rcontent'">
+                    and rcontent like CONCAT('%',#{word},'%')
+                </when>
+                <when test="col=='uid'">
+                    and uid like CONCAT('%',#{word},'%')
+                </when>
+                <when test="col=='title_content'">
+                    and
+                    (rtitle like CONCAT('%',#{word},'%')
+                    or
+                    rcontent like CONCAT('%',#{word},'%'))
+                </when>
+            </choose>
+		order by rno desc
+		limit #{sno} , #{cnt}
+	</select>
+	<select id="total" resultType="int" parameterType="Map">
+		select count(*) 
+		from review
+		where did=#{did}
+			<choose>
+                <when test="col=='rtitle'">
+                    and rtitle like CONCAT('%',#{word},'%')
+                </when>
+                <when test="col=='rcontent'">
+                    and rcontent like CONCAT('%',#{word},'%')
+                </when>
+                <when test="col=='uid'">
+                    and uid like CONCAT('%',#{word},'%')
+                </when>
+                <when test="col=='title_content'">
+                    and
+                    (rtitle like CONCAT('%',#{word},'%')
+                    or
+                    rcontent like CONCAT('%',#{word},'%'))
+                </when>
+            </choose>
+	</select>
+</mapper>

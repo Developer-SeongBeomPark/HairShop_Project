@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.style.StyleMapper">
+	
+	<insert id="create" parameterType="com.study.style.StyleDTO">
+		insert into style (imagetype,imagecode,did,gender)
+		values(#{imagetype},#{imagecode},#{did},#{gender})
+	</insert>
+	
+	<select id="list" parameterType="Map" resultType="com.study.style.StyleDTO">
+		select * from style
+		<where>
+				<if test=' gender != "all" '>
+					gender = #{gender}
+				</if>
+				and did = #{style_did}
+		</where>
+		
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		delete from style
+		where imageno = #{imageno}
+	</delete>
+</mapper>

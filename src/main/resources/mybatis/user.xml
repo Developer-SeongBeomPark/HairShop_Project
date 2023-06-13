@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.user.UserMapper">
+	
+	<update id="pwUpdate" parameterType="Map">
+		UPDATE user 
+		SET upw = #{newpw}
+		WHERE uid = #{uid}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		DELETE FROM user
+		WHERE uid = #{uid}
+	</delete>
+	
+	<select id="read" parameterType="String" resultType="com.study.user.UserDTO">
+		SELECT *
+		FROM user
+		WHERE uid = #{uid}
+	</select>
+	
+	<select id="list" parameterType="Map" resultType="com.study.user.UserDTO">
+		SELECT *
+		FROM user
+		<where>
+			<choose>
+				<when test="col=='uname'">
+					uname like concat('%',#{word},'%')
+				</when>
+				<when test="col=='uid'">
+					uid like concat('%',#{word},'%')
+				</when>
+				<when test="col=='uemail'">
+					uemail like concat('%',#{word},'%')
+				</when>
+				<when test="col=='uphone'">
+					uphone like concat('%',#{word},'%')
+				</when>
+			</choose>
+		</where>
+		ORDER BY uname
+		limit #{sno}, #{eno}
+	</select>
+	
+	<select id="total" parameterType="Map" resultType="int">
+		SELECT count(*)
+		FROM user
+		<where>
+			<choose>
+				<when test="col=='uname'">
+					uname like concat('%',#{word},'%')
+				</when>
+				<when test="col=='uid'">
+					uid like concat('%',#{word},'%')
+				</when>
+				<when test="col=='uemail'">
+					uemail like concat('%',#{word},'%')
+				</when>
+				<when test="col=='uphone'">
+					uphone like concat('%',#{word},'%')
+				</when>
+			</choose>
+		</where>
+	</select>
+	
+	<update id="update" parameterType="com.study.user.UserDTO">
+		UPDATE user 
+		SET uname = #{uname},
+			uemail= #{uemail},
+			uphone = #{uphone}
+		WHERE uid = #{uid}
+	</update>
+	
+	<select id="mypage" parameterType="String" resultType="com.study.user.UserDTO">
+		SELECT *
+		FROM user
+		WHERE uid = #{uid}
+	</select>
+	
+	<select id="findPw" parameterType="Map" resultType="String">
+		SELECT upw
+		FROM user
+		WHERE uid = #{uid} and uemail = #{uemail}
+	</select> 
+	
+	<select id="findId" parameterType="Map" resultType="String">
+		SELECT uid
+		FROM user
+		WHERE uname = #{uname} and uemail = #{uemail}
+	</select>
+	 
+	<select id="getGrade" parameterType="String" resultType="Map">
+		SELECT grade, uname
+		FROM user
+		WHERE uid = #{uid}
+	</select>
+	
+	<select id="loginCheck" parameterType="Map" resultType="int">
+		SELECT count(*)
+		FROM user
+		WHERE uid = #{uid} and upw = #{upw}
+	</select>
+	
+	<select id="duplicatedEmail" parameterType="String" resultType="int" >
+		SELECT count(uemail)
+		FROM user
+		WHERE uemail=#{uemail}
+	</select>
+	
+	<select id="duplicatedId" parameterType="String" resultType="int" >
+		SELECT count(uid)
+		FROM user
+		WHERE uid = #{uid}
+	</select>
+	
+	<insert id="create" parameterType="com.study.user.UserDTO">
+		INSERT INTO user(uid, upw, uname, uemail, uphone, grade)
+		VALUES(#{uid}, #{upw}, #{uname}, #{uemail}, #{uphone}, 'C')
+	</insert>
+	
+	<resultMap type="com.study.enroll.EnrollDTO" id="userReserveList">
+		<result property="enrolldate" column="enrolldate" />
+		<result property="enrolltime" column="enrolltime" />
+		<result property="emenu" column="emenu" />
+		<result property="eprice" column="eprice" />
+		<collection property="designerInfo"	resultMap="designerInfoDTO" /> 
+	</resultMap>
+	
+	<resultMap type="com.study.designer.DesignerDTO" id="designerInfoDTO">
+		<result property="hairshop" column="hairshop" />
+		<result property="dname" column="dname" />
+		<result property="did" column="did" />
+	</resultMap>
+	
+	<select id="reserveList" parameterType="String"
+		resultMap="userReserveList">
+		SELECT
+		d.hairshop, 
+		d.dname,
+		e.enrolldate,
+		e.enrolltime,
+		e.emenu,
+		e.eprice
+		FROM designer d 
+		LEFT JOIN enroll e ON d.did = e.did
+		LEFT JOIN reserve r ON r.enrollno = e.enrollno
+		LEFT JOIN user u ON r.uid = u.uid
+		WHERE u.uid = #{uid} AND r.rconfig = 0
+	</select>
+	
+	
+	
+	<resultMap type="com.study.enroll.EnrollDTO" id="configList">
+		<result property="enrolldate" column="enrolldate" />
+		<result property="enrolltime" column="enrolltime" />
+		<result property="emenu" column="emenu" />
+		<result property="eprice" column="eprice" />
+		<collection property="designerInfo"	resultMap="designerInfoDTO" /> 
+	</resultMap>
+	
+	<select id="configList" parameterType="String"
+		resultMap="configList">
+		SELECT
+		d.hairshop, 
+		d.dname,
+		e.enrolldate,
+		e.enrolltime,
+		e.emenu,
+		e.eprice
+		FROM designer d 
+		LEFT JOIN enroll e ON d.did = e.did
+		LEFT JOIN reserve r ON r.enrollno = e.enrollno
+		LEFT JOIN user u ON r.uid = u.uid
+		WHERE (u.uid = #{uid} AND r.rconfig = 1 AND e.enrolldate > curdate()) 
+			 OR
+			 (u.uid = #{uid} AND r.rconfig = 1 AND
+			 e.enrolldate = curdate() AND e.enrolltime > curtime())
+	</select>
+	
+	<resultMap type="com.study.enroll.EnrollDTO" id="historyList">
+		<result property="enrolldate" column="enrolldate" />
+		<result property="enrolltime" column="enrolltime" />
+		<result property="emenu" column="emenu" />
+		<result property="eprice" column="eprice" />
+		<collection property="designerInfo"	resultMap="designerInfoDTO" /> 
+	</resultMap>
+	
+	<select id="historyList" parameterType="String"
+		resultMap="historyList">
+		SELECT
+		d.hairshop, 
+		d.dname,
+		e.enrolldate,
+		e.enrolltime,
+		e.emenu,
+		e.eprice,
+		d.did
+		FROM designer d 
+		LEFT JOIN enroll e ON d.did = e.did
+		LEFT JOIN reserve r ON r.enrollno = e.enrollno
+		LEFT JOIN user u ON r.uid = u.uid
+		<![CDATA[
+			WHERE (u.uid = #{uid} AND r.rconfig = 1 AND e.enrolldate < curdate()) 
+			 OR
+			 (u.uid = #{uid} AND r.rconfig = 1 AND
+			 e.enrolldate = curdate() AND e.enrolltime < curtime())
+		]]>
+		ORDER BY e.enrolldate desc
+	</select>
+	
+	<update id="minusLikecnt" parameterType="String">
+		UPDATE designer
+		SET likecnt=likecnt-1
+		WHERE did in (SELECT did FROM heart WHERE uid=#{uid})
+	</update>
+</mapper>

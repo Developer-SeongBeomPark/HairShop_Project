@@ -1,0 +1,22 @@
+.login, .userchoice, .join, .agreement, .find, .update, .pwUpdate, .withdrawl, .approve {
+            width: 800px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            text-align: center;
+}
+
+h2 {
+            padding: 0 0 20px;
+            font-family: "Nanum Gothic", sans-serif;
+            font-size: 32px;
+            color: #111;
+            border-bottom: 2px solid #111;
+            text-align: center;
+            line-height: 1;
+}
+
+.withdrawl>p{
+	color: red;
+}

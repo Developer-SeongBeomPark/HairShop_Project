@@ -1,0 +1,90 @@
+@import
+	url("https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Serif+KR&display=swap")
+	;
+
+.container {
+	width: 500px;
+	height: 40%; 
+	margin : 50px auto;
+	padding: 20px;
+	text-align: center;
+	font-family: "Nanum Gothic", sans-serif;
+	position: relative;
+	border: 1px solid;
+	border-radius:15px;
+}
+
+#sub_mit,#goback {
+	background-color: #999;
+	border: none;
+	border-radius: 7px;
+	padding: 7px;
+	font-size: 1rem;
+	font-weight: bold;
+	color: white;
+	cursor: pointer;
+	font-family: "Nanum Gothic", sans-serif;
+}
+
+#sub_mit:hover {
+	color: white;
+	background-color: #4bcffa;
+}
+
+#goback:hover {
+	color: white;
+	background-color: #222f3e;
+}
+
+.area-box {
+	display: flex;
+	flex-direction: column;
+	margin: 10px auto;
+}
+
+.area-box p {
+	margin:10px auto;
+	font-size: 1.4rem;
+	font-weight: bold;
+	font-family: "Nanum Gothic", sans-serif;
+}
+
+textarea {
+	font-size: 1rem;
+	padding: 20px;
+	width: 100%;
+	resize: none;
+	border-radius: 10px;
+	font-size: 1.5rem;
+	font-weight: bold; margin : 10px auto;
+	color: #1e272e;
+	margin: 10px auto;
+}
+
+p {
+	margin: 10px auto;
+	text-align:center;
+}
+
+table{
+    margin: 10px auto;
+    width: 100%;
+}
+th{
+	background-color:black;
+	color:white;
+}
+th,td{
+    border: 1px solid;
+    padding :5px;
+    text-align:center;
+    font-size:1.5rem;
+}
+#enrollbtn{
+	padding:3px;
+	border:none;
+	
+}
+#enrollbtn:hover{
+	background-color:#0be881;
+}

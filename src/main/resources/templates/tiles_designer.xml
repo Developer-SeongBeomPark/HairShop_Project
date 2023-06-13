@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+ 
+<tiles-definitions>
+  <!-- main -->
+  <definition name="/dcreate" extends="main">
+    <put-attribute name="title" value="디자이너 회원가입"></put-attribute>
+    <put-attribute name="body"
+      value="/WEB-INF/views/designer/dcreateForm.jsp" />
+  </definition>
+  <definition name="/dmypage" extends="main">
+    <put-attribute name="title" value="마이페이지"></put-attribute>
+    <put-attribute name="body"
+      value="/WEB-INF/views/designer/designer_mypage.jsp" />
+  </definition>
+  <definition name="/dlogin" extends="main">
+    <put-attribute name="title" value="디자이너 로그인"></put-attribute>
+    <put-attribute name="body"
+      value="/WEB-INF/views/designer/dloginForm.jsp" />
+  </definition>
+  <definition name="/dmypage_intro_update" extends="main">
+    <put-attribute name="title" value="디자이너 소개 수정"></put-attribute>
+    <put-attribute name="body"
+      value="/WEB-INF/views/designer/designer_introduction_updateForm.jsp" />
+  </definition>
+  <definition name="/dmypage_update" extends="main">
+    <put-attribute name="title" value="디자이너 정보 수정"></put-attribute>
+    <put-attribute name="body"
+      value="/WEB-INF/views/designer/dupdateForm.jsp" />
+  </definition>
+  <definition name="/designer/dupdateFileForm" extends="main">
+    <put-attribute name="title" value="디자이너 사진 수정"></put-attribute>
+    <put-attribute name="body"
+      value="/WEB-INF/views/designer/dupdateFileForm.jsp" />
+  </definition>
+  <definition name="/dfindid" extends="main">
+    <put-attribute name="title" value="아이디 찾기"></put-attribute>
+    <put-attribute name="body"
+      value="/WEB-INF/views/designer/findidForm.jsp" />
+  </definition>
+  <definition name="/dfindpw" extends="main">
+    <put-attribute name="title" value="비밀번호 찾기"></put-attribute>
+    <put-attribute name="body"
+      value="/WEB-INF/views/designer/findpwForm.jsp" />
+  </definition>
+  <definition name="/dlist" extends="main">
+    <put-attribute name="title" value="디자이너 목록"></put-attribute>
+    <put-attribute name="body"
+      value="/WEB-INF/views/designer/list.jsp" />
+  </definition>
+  <definition name="/dapprove" extends="main">
+    <put-attribute name="title" value="자격승인"></put-attribute>
+    <put-attribute name="body"
+      value="/WEB-INF/views/designer/approve.jsp" />
+  </definition>
+  <definition name="/dmypage_delete" extends="main">
+    <put-attribute name="title" value="디자이너 탈퇴"></put-attribute>
+    <put-attribute name="body"
+      value="/WEB-INF/views/designer/withdrawl.jsp" />
+  </definition>
+  <definition name="/search" extends="main">
+    <put-attribute name="title" value="디자이너 검색"></put-attribute>
+    <put-attribute name="body"
+      value="/WEB-INF/views/designer/search.jsp" />
+  </definition>
+</tiles-definitions>

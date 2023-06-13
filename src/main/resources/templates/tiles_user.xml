@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+ 
+<tiles-definitions>
+  <!-- main -->
+   <definition name="/user/agree" extends="main"> 
+      <put-attribute name="title" value="약관동의" ></put-attribute> 
+      <put-attribute name="body" value="/WEB-INF/views/user/agreement.jsp" /> 
+   </definition>
+   <definition name="/user/userchoice" extends="main"> 
+      <put-attribute name="title" value="가입유형선택" ></put-attribute> 
+      <put-attribute name="body" value="/WEB-INF/views/user/userchoice.jsp" /> 
+   </definition>
+   <definition name="/user/join" extends="main"> 
+      <put-attribute name="title" value="회원가입" ></put-attribute> 
+      <put-attribute name="body" value="/WEB-INF/views/user/joinForm.jsp" /> 
+   </definition>
+   <definition name="/user/login" extends="main"> 
+      <put-attribute name="title" value="로그인" ></put-attribute> 
+      <put-attribute name="body" value="/WEB-INF/views/user/login.jsp" /> 
+   </definition>          
+   <definition name="/user/findid" extends="main"> 
+      <put-attribute name="title" value="아이디찾기" ></put-attribute> 
+      <put-attribute name="body" value="/WEB-INF/views/user/findidForm.jsp" /> 
+   </definition>          
+   <definition name="/user/findpw" extends="main"> 
+      <put-attribute name="title" value="비밀번호찾기" ></put-attribute> 
+      <put-attribute name="body" value="/WEB-INF/views/user/findpwForm.jsp" /> 
+   </definition>
+   <definition name="/user/mypage" extends="main"> 
+      <put-attribute name="title" value="마이페이지" ></put-attribute> 
+      <put-attribute name="body" value="/WEB-INF/views/user/mypage.jsp" /> 
+   </definition>            
+   <definition name="/user/update" extends="main"> 
+      <put-attribute name="title" value="회원정보수정" ></put-attribute> 
+      <put-attribute name="body" value="/WEB-INF/views/user/updateForm.jsp" /> 
+   </definition>            
+   <definition name="/user/updatePw" extends="main"> 
+      <put-attribute name="title" value="비밀번호수정" ></put-attribute> 
+      <put-attribute name="body" value="/WEB-INF/views/user/pwUpdateForm.jsp" /> 
+   </definition>            
+   <definition name="/user/list" extends="main"> 
+      <put-attribute name="title" value="고객목록" ></put-attribute> 
+      <put-attribute name="body" value="/WEB-INF/views/user/list.jsp" /> 
+   </definition>                        
+   <definition name="/user/delete" extends="main"> 
+      <put-attribute name="title" value="회원탈퇴" ></put-attribute> 
+      <put-attribute name="body" value="/WEB-INF/views/user/withdrawl.jsp" /> 
+   </definition>                        
+</tiles-definitions>

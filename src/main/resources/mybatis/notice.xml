@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.notice.NoticeMapper">
+
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="int">
+		DELETE FROM notice
+		WHERE noticeno=#{noticeno};
+	</delete>
+
+	<!-- 수정 -->
+	<update id="edit" parameterType="com.study.notice.NoticeDTO">
+		UPDATE notice
+		SET ntitle=#{ntitle}, ncontent=#{ncontent}
+		WHERE noticeno=#{noticeno}
+	</update>
+
+	<!-- 생성 -->
+	<insert id="write" parameterType="com.study.notice.NoticeDTO">
+		INSERT INTO notice(uid, ntitle,
+		viewcnt, ndate, ncontent)
+		VALUES(#{uid}, #{ntitle}, 0,
+		date_format(now(), '%y-%m-%d'), #{ncontent})
+	</insert>
+
+	<!-- 조회수 증가 -->
+	<update id="upCnt" parameterType="int">
+		update notice
+		set viewcnt = viewcnt + 1
+		where noticeno = #{noticeno}
+	</update>
+
+
+	<!-- 조회 -->
+
+	<select id="read" parameterType="int"
+		resultType="com.study.notice.NoticeDTO">
+		SELECT noticeno, ntitle, ncontent, uid, viewcnt, ndate
+		FROM
+		notice
+		WHERE noticeno=#{noticeno}
+	</select>
+
+	<select id="list" parameterType="Map"
+		resultType="com.study.notice.NoticeDTO">
+		SELECT noticeno, uid, ntitle, viewcnt, ndate
+		FROM notice
+		<where>
+			<choose>
+				<when test="col=='uid'">
+					uid like CONCAT('%',#{word},'%')
+				</when>
+				<when test="col=='ntitle'">
+					ntitle like CONCAT('%',#{word},'%')
+				</when>
+				<when test="col=='ncontent'">
+					ncontent like CONCAT('%',#{word},'%')
+				</when>
+				<when test="col=='title_content'">
+					ntitle like CONCAT('%',#{word},'%')
+					or
+					ncontent like
+					CONCAT('%',#{word},'%')
+				</when>
+			</choose>
+		</where>
+		ORDER BY noticeno DESC
+		limit #{sno} , #{cnt}
+	</select>
+
+	<select id="total" parameterType="Map" resultType="int">
+		select count(*) from notice
+		<where>
+			<choose>
+				<when test="col=='uid'">
+					uid like CONCAT('%',#{word},'%')
+				</when>
+				<when test="col=='ntitle'">
+					ntitle like CONCAT('%',#{word},'%')
+				</when>
+				<when test="col=='ncontent'">
+					ncontent like CONCAT('%',#{word},'%')
+				</when>
+				<when test="col=='title_content'">
+					ntitle like CONCAT('%',#{word},'%')
+					or
+					ncontent like
+					CONCAT('%',#{word},'%')
+				</when>
+			</choose>
+		</where>
+	</select>
+</mapper>

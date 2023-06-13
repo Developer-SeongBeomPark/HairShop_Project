@@ -1,0 +1,244 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+ul>li {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+.menu-icon a {
+    text-decoration: none;
+    color: black;
+    
+}
+.container {
+    width: 100%;
+    height: 100vh;
+}
+
+.container .header {
+    width: 80%;
+    height: 80px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.search{
+    text-align: right;
+}
+
+.container .header h1 a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+
+}
+.container .nav ul li {
+    display: inline-block;
+    margin: 0 10px;
+}
+.container .nav ul li a {
+    text-decoration: none;
+    color: black;
+}
+.container .main-picture img {
+    width: 70%;
+    height: 30vh;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.container .contents .menu {
+    width: 70%;
+    height: 10vh;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.container .contents .menu {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+}
+.container .main-contents .home {
+    width: 80%;
+    height: 50vh;
+    text-align: left;
+    margin: 10px auto;
+    border-radius: 20px;
+    border: 2px dotted rgb(182, 182, 182);
+}
+
+#area{
+    width: 100%;
+    height: 50vh;
+    border: 0;
+    border-radius: 20px;
+}
+
+a{
+    text-decoration: none;
+}
+
+.search-text{
+    height: 34px;
+    padding: 0 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    outline: none;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.75);
+    font-size: 16px;
+}
+
+.search-text:focus{
+    border-color: #000;
+}
+
+.clearfix::after{
+    content: "";
+    clear: both;
+    display: block;
+}
+.float--left{
+    float: left;
+}
+.float--right{
+    float: right;
+}
+
+
+
+header{
+    border-bottom: 1px solid #000;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .75);
+    background: #fff;
+    height: auto;
+}
+
+header .inner{
+    height: 78px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+header .menu-group {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+}
+
+header .logo{
+    margin-right: 10px;
+}
+
+header .logo a{
+    background: url("/svg/tiger.svg");
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
+    display: block;
+    text-indent: -9999px;
+}
+
+header .main-menu{
+    display: flex;
+}
+
+header .main-menu li a{
+    display: block;
+    padding: 10px;
+    color: rgb(71, 62, 62);
+}
+
+header .main-menu li a:hover{
+    color: #4078c5
+}
+
+header .sign-group{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    
+}
+
+header .btn-group{
+    order: 2;
+    display: flex;
+}
+
+header .btn-group .sign-in {
+    margin-right: 4px;
+    display: flex;
+    align-items: center;
+    height: 34px;
+    padding: 0 12px;
+    border: 1px solid #d5d5d5;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+}
+
+header .btn-group .sign-up {
+    margin-right: 4px;
+    display: flex;
+    align-items: center;
+    height: 34px;
+    padding: 0 12px;
+    border: 1px solid #d5d5d5;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+}
+
+#search-btn {
+    margin-right: 4px;
+    display: flex;
+    align-items: center;
+    height: 34px;
+    font-weight: 15px;
+    padding: 0 12px;
+    border: 1px solid #d5d5d5;
+    border-radius: 4px;
+    font-size: 12px;
+    color: rgb(83, 82, 82);
+    background-color: #fff;
+    text-align: center;
+}
+
+#search-form{
+    order: 1;
+    margin-right: 12px;
+    display: flex;
+}
+
+#search {
+    width: 160px;
+    font-size: 14px;
+}
+
+#search + [type="submit"] {
+    display: none;
+}
+
+header .sub-menu{
+    display: flex;
+    margin-right: 10px;
+}
+
+header .sub-menu li a{
+    padding: 8px;
+    display: block;
+    font-size: 13px;
+    color: gray;
+}
+
+header .sub-menu li a:hover {
+    color: #4078c0;
+}

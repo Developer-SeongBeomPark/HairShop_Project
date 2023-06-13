@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.hairmenu.HairmenuMapper">
+
+	<select id="overHairmenu" parameterType="Map" resultType="int">
+		select count(*)
+		from hairmenu 
+		where price=#{price} and menu =#{menu} and did=#{did}
+		and cateno=#{cateno} and hgender=#{hgender}
+	</select>
+	
+	<select id="hlist" parameterType="String" resultType="com.study.hairmenu.HairmenuDTO">
+		SELECT *
+		FROM hairmenu
+		where did=#{did}
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM hairmenu
+		WHERE menuno=#{menuno}
+	</delete>
+
+	<insert id="hairmenuEnroll" parameterType="com.study.hairmenu.HairmenuDTO">
+		insert into hairmenu(price, menu, did, cateno, hgender)
+		values (#{price}, #{menu}, #{did}, #{cateno}, #{hgender})
+	</insert>
+	
+	<select id="itemlist" parameterType="Map" resultType="com.study.hairmenu.HairmenuDTO">
+		SELECT *
+		FROM hairmenu
+		where did=#{did} and cateno=#{cateno}
+	</select>
+
+</mapper>
